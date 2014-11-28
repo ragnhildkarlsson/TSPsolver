@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class GraphData {
 
-    private int[][] distanceMatrix;
+    private long[][] distanceMatrix;
     private Map<Integer, Coordinates> nodeCoordinates;
 
     public GraphData(Map<Integer, Coordinates> nodeMap) {
@@ -16,7 +16,7 @@ public class GraphData {
 	int numberOfNodes = nodeMap.size();
 
 	// Create and fill in the distances of the nodes
-	this.distanceMatrix = new int[numberOfNodes][numberOfNodes];
+	this.distanceMatrix = new long[numberOfNodes][numberOfNodes];
 
 	for (int i = 0; i < numberOfNodes; i++) {
 	    for (int j = i; j < numberOfNodes; j++) { // j = i : no need to recalculate old values
@@ -26,15 +26,22 @@ public class GraphData {
 	}
     }
 
-    public int calculateDistance(Coordinates coordinates, Coordinates coordinates2) {
+    /**
+     * Returns the squared distance of the two given coordinates in the plane.
+     * 
+     * @param coordinates
+     * @param coordinates2
+     * @return
+     */
+    public long calculateDistance(Coordinates coordinates, Coordinates coordinates2) {
 	// Calculate the Euclidean distance
 
 	double distanceReal = Math.pow(coordinates.getX() - coordinates2.getX(), 2);
 	distanceReal += Math.pow(coordinates.getY() - coordinates2.getY(), 2);
-	distanceReal = Math.sqrt(distanceReal);
-	distanceReal = Math.rint(distanceReal);
+	// distanceReal = Math.sqrt(distanceReal); // squared distance, no need to take sqrt
+	distanceReal = Math.round(distanceReal);
 
-	return (int) distanceReal;
+	return (long) distanceReal;
     }
 
     /**
@@ -45,7 +52,14 @@ public class GraphData {
 	return listOFNodes;
     }
 
-    public int getDistance(int nodeA, int nodeB) {
+    /**
+     * Returns the squared distance between node A and node B
+     * 
+     * @param nodeA
+     * @param nodeB
+     * @return
+     */
+    public long getDistance(int nodeA, int nodeB) {
 	return this.distanceMatrix[nodeA][nodeB];
     }
 
