@@ -63,4 +63,8 @@ public class GraphData {
 	return this.distanceMatrix[nodeA][nodeB];
     }
 
+    public int numberOfNodes() {
+	return this.nodeCoordinates.size();
+    }
+
 }
