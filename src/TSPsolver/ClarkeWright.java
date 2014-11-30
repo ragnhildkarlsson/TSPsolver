@@ -1,7 +1,7 @@
 package TSPsolver;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -26,7 +26,9 @@ public class ClarkeWright implements TourConstructStrategy {
 	// Find savings;
 	List<Edge> savings = getShortcuts(graphData, hub);
 	// Sort savings in decreasing order
-	savings.sort(EdgeComparator);
+	EdgeDistanceComparer edgeComparer = new EdgeDistanceComparer();
+	Collections.sort(savings, edgeComparer);
+
 	// construct tour
 	Map<Integer, List<Integer>> partialTour = new HashMap<>();
 	for (Integer node : nodes) {
@@ -171,10 +173,4 @@ public class ClarkeWright implements TourConstructStrategy {
 	return shortcuts;
     }
 
-    /**
-     * Represent a comparator for sorting edges in decreasing order;
-     */
-    public static Comparator<Edge> EdgeComparator = (saving1, saving2) -> {
-	return Long.compare(saving1.getDistance(), saving2.getDistance());
-    };
 }

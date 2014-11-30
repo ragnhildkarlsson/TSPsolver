@@ -1,7 +1,7 @@
 package TSPsolver;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Tour {
 
@@ -12,7 +12,8 @@ public class Tour {
     }
 
     public List<Integer> getTourList() {
-	tour.stream().map(node -> node).collect(Collectors.toList());
-	return tour;
+	List<Integer> copy = new ArrayList<Integer>();
+	copy.addAll(tour);
+	return copy;
     }
 }
