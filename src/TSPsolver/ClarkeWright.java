@@ -29,10 +29,11 @@ public class ClarkeWright implements TourConstructStrategy {
 	savings.sort(EdgeComparator);
 	// construct tour
 	Map<Integer, List<Integer>> partialTour = new HashMap<>();
-	for (int i = 0; i < nodes.size(); i++) {
+	for (Integer node : nodes) {
 	    List<Integer> neighbours = new ArrayList<Integer>();
-	    partialTour.put(i, neighbours);
+	    partialTour.put(node, neighbours);
 	}
+
 	int edgeIndex = 0;
 	while (nodes.size() > 2) {
 	    Edge edge = savings.get(edgeIndex);
@@ -174,6 +175,6 @@ public class ClarkeWright implements TourConstructStrategy {
      * Represent a comparator for sorting edges in decreasing order;
      */
     public static Comparator<Edge> EdgeComparator = (saving1, saving2) -> {
-	return Long.compare(saving2.getDistance(), saving1.getDistance());
+	return Long.compare(saving1.getDistance(), saving2.getDistance());
     };
 }
