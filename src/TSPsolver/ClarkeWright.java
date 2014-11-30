@@ -55,7 +55,7 @@ public class ClarkeWright implements TourConstructStrategy {
 	}
 
 	// Add remaining edges to the partial tour;
-	Integer[] remainignNodes = (Integer[]) nodes.toArray();
+	Integer[] remainignNodes = nodes.toArray(new Integer[2]);
 	int remaingNode1 = remainignNodes[0];
 	int remaingNode2 = remainignNodes[1];
 	List<Integer> start = new ArrayList<Integer>();
@@ -155,7 +155,7 @@ public class ClarkeWright implements TourConstructStrategy {
      *            the hub node;
      */
     private List<Edge> getShortcuts(GraphData graphData, int hub) {
-	int nNodes = graphData.getNumberOfNodes();
+	int nNodes = graphData.numberOfNodes();
 	ArrayList<Edge> shortcuts = new ArrayList<Edge>();
 	for (int i = 0; i < nNodes; i++) {
 	    for (int j = i + 1; j < nNodes; j++) {
@@ -173,6 +173,6 @@ public class ClarkeWright implements TourConstructStrategy {
      * Represent a comparator for sorting edges in decreasing order;
      */
     public static Comparator<Edge> EdgeComparator = (saving1, saving2) -> {
-	return Integer.compare(saving2.getSaving(), saving1.getSaving());
+	return Long.compare(saving2.getDistance(), saving1.getDistance());
     };
 }
