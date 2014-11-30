@@ -5,7 +5,13 @@ import java.util.Map;
 
 public class IndataReader {
 
-    public GraphData read(Kattio kattio) {
+    private Kattio kattio;
+
+    public IndataReader(Kattio kattio) {
+	this.kattio = kattio;
+    }
+
+    public GraphData read() {
 
 	Map<Integer, Coordinates> nodeMap = new HashMap<>();
 
