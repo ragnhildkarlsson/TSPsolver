@@ -3,12 +3,12 @@ package TSPsolver;
 public class Edge {
     private int nodeA;
     private int nodeB;
-    private int saving;
+    private long distance;
 
-    public Edge(int nodeA, int nodeB, int saving) {
+    public Edge(int nodeA, int nodeB, long distance) {
 	this.nodeA = nodeA;
 	this.nodeB = nodeB;
-	this.saving = saving;
+	this.distance = distance;
     }
 
     public int getNodeA() {
@@ -19,7 +19,7 @@ public class Edge {
 	return nodeB;
     }
 
-    public int getSaving() {
-	return saving;
+    public long getDistance() {
+	return distance;
     }
 }
