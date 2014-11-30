@@ -90,8 +90,8 @@ public class ClarkeWrightTest {
      * D - C
      * </pre>
      * 
-     * Should both a call with node1=E and node2 = D to ceatesCycle(...) return
-     * false and a call with node1=D and node2 = E to ceatesCycle(...) return
+     * Should both a call with node1=E and node2 = D to createsCycle(...) return
+     * false and a call with node1=D and node2 = E to createsCycle(...) return
      * false
      */
     @Test
@@ -120,7 +120,7 @@ public class ClarkeWrightTest {
 	partialGraph.put(nodeD, nodeDNeighbors);
 	partialGraph.put(nodeE, nodeENeighbors);
 
-	ClarkeWright cw = new ClarkeWright(new Random());
+	ClarkeWright cw = new ClarkeWright(null);
 	boolean res = cw.createsCycle(partialGraph, nodeD, nodeE);
 	assertEquals(false, res);
 	res = cw.createsCycle(partialGraph, nodeE, nodeD);
@@ -139,8 +139,8 @@ public class ClarkeWrightTest {
      * E - A
      * </pre>
      * 
-     * Should both a call with node1=E and node2 = D to ceatesCycle(...) return
-     * true and a call with node1=D and node2 = E to ceatesCycle(...) return
+     * Should both a call with node1=E and node2 = D to createsCycle(...) return
+     * true and a call with node1=D and node2 = E to createsCycle(...) return
      * true
      */
     @Test
@@ -172,7 +172,7 @@ public class ClarkeWrightTest {
 	partialGraph.put(nodeD, nodeDNeighbors);
 	partialGraph.put(nodeE, nodeENeighbors);
 
-	ClarkeWright cw = new ClarkeWright(new Random());
+	ClarkeWright cw = new ClarkeWright(null);
 	boolean res = cw.createsCycle(partialGraph, nodeD, nodeE);
 	assertEquals(true, res);
 	res = cw.createsCycle(partialGraph, nodeE, nodeD);

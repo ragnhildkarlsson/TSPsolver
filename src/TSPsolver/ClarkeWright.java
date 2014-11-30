@@ -55,14 +55,14 @@ public class ClarkeWright implements TourConstructStrategy {
 	}
 
 	// Add remaining edges to the partial tour;
-	Integer[] remainignNodes = nodes.toArray(new Integer[2]);
-	int remaingNode1 = remainignNodes[0];
-	int remaingNode2 = remainignNodes[1];
+	Integer[] remainingNodes = nodes.toArray(new Integer[2]);
+	int remainingNode1 = remainingNodes[0];
+	int remainingNode2 = remainingNodes[1];
 	List<Integer> start = new ArrayList<Integer>();
-	start.add(remaingNode1);
+	start.add(remainingNode1);
 	partialTour.put(hub, start);
-	partialTour.get(remaingNode1).add(hub);
-	partialTour.get(remaingNode2).add(hub);
+	partialTour.get(remainingNode1).add(hub);
+	partialTour.get(remainingNode2).add(hub);
 	List<Integer> tourList = getTour(partialTour, hub);
 	Tour tour = new Tour(tourList);
 	return tour;
@@ -141,8 +141,9 @@ public class ClarkeWright implements TourConstructStrategy {
 	    neighbor = getOtherInt(neighbors, oldNode);
 	    iter++;
 	}
-	//
-	throw new IllegalStateException();
+
+	throw new IllegalStateException(
+		"This TSPSolver handle indata of size <=1000 nodes, 2000 iterations should not be needed");
     }
 
     /**
