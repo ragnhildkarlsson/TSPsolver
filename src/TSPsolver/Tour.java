@@ -1,8 +1,11 @@
 package TSPsolver;
 
+import java.util.List;
+
 public class Tour {
-	
-	public Tour(int[] tour){
-		
-	}
+
+    public Tour(List<Integer> tour) {
+
+    }
+
 }
