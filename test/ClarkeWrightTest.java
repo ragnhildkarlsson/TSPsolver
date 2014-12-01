@@ -43,7 +43,7 @@ public class ClarkeWrightTest {
 	int nodeB = 1;
 	int nodeC = 2;
 	int nodeH = 3;
-	List<Integer> nodes = new ArrayList();
+	List<Integer> nodes = new ArrayList<>();
 	nodes.add(nodeA);
 	nodes.add(nodeB);
 	nodes.add(nodeC);
