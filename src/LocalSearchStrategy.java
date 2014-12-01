@@ -1,4 +1,4 @@
-package TSPsolver;
+
 
 public interface LocalSearchStrategy {
 	

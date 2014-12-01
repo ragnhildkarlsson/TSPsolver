@@ -1,4 +1,4 @@
-package TSPsolver;
+
 
 /**
  * Holds a set of immutable x and y coordinates.
