@@ -1,5 +1,3 @@
-
-
 import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
@@ -21,7 +19,7 @@ public class GraphDataTest {
 		graphData.calculateDistance(coord0, coord1));
 
 	Coordinates coord2 = new Coordinates(0.9, 0);
-	assertEquals("Integer square distance between points: 0 and 0.9 on a line should be 1", 1,
+	assertEquals("Integer square distance between points: 0 and 0.9 on a line should be 0", 0,
 		graphData.calculateDistance(coord0, coord2));
 
 	// lines along y-axis
@@ -31,7 +29,7 @@ public class GraphDataTest {
 		graphData.calculateDistance(coordy0, coordy1));
 
 	Coordinates coordy2 = new Coordinates(0, 0.9);
-	assertEquals("Integer square distance between points: 0 and 0.9 on a line should be 1", 1,
+	assertEquals("Integer square distance between points: 0 and 0.9 on a line should be 0", 0,
 		graphData.calculateDistance(coordy0, coordy2));
 
     }

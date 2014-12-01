@@ -1,5 +1,3 @@
-
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,12 +21,10 @@ public class ClarkeWright implements TourConstructStrategy {
 	// remove hub from nodes
 	int hub = rand.nextInt(nodes.size());
 	nodes.remove(hub);
-	// Find savings;
 	List<Edge> savings = getShortcuts(graphData, hub);
 	// Sort savings in decreasing order
 	EdgeDistanceComparer edgeComparer = new EdgeDistanceComparer();
 	Collections.sort(savings, edgeComparer);
-
 	// construct tour
 	Map<Integer, List<Integer>> partialTour = new HashMap<>();
 	for (Integer node : nodes) {

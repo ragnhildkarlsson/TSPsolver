@@ -1,17 +1,12 @@
-
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class IndataReader {
 
-    private Kattio kattio;
-
-    public IndataReader(Kattio kattio) {
-	this.kattio = kattio;
+    public IndataReader() {
     }
 
-    public GraphData read() {
+    public GraphData read(Kattio kattio) {
 
 	Map<Integer, Coordinates> nodeMap = new HashMap<>();
 
