@@ -1,17 +1,11 @@
-
-
 import java.util.List;
 
 public class TSPsolver {
 
-    IndataReader ir;
-
-    public TSPsolver(IndataReader ir) {
-	this.ir = ir;
+    public TSPsolver() {
     }
 
-    public List<Integer> solve(TourConstructStrategy tourConstructStrategy) {
-	GraphData graphData = ir.read();
+    public List<Integer> solve(GraphData graphData, TourConstructStrategy tourConstructStrategy) {
 	Tour tour = tourConstructStrategy.constructTour(graphData);
 	return tour.getTourList();
     }

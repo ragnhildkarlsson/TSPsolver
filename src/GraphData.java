@@ -1,5 +1,3 @@
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,11 +17,13 @@ public class GraphData {
 	this.distanceMatrix = new long[numberOfNodes][numberOfNodes];
 
 	for (int i = 0; i < numberOfNodes; i++) {
-	    for (int j = i; j < numberOfNodes; j++) { // j = i : no need to recalculate old values
+	    for (int j = i; j < numberOfNodes; j++) { // j = i : no need to
+						      // recalculate old values
 		distanceMatrix[i][j] = calculateDistance(nodeMap.get(i), nodeMap.get(j));
 		distanceMatrix[j][i] = distanceMatrix[i][j]; // symmetry
 	    }
 	}
+
     }
 
     /**
@@ -35,12 +35,8 @@ public class GraphData {
      */
     public long calculateDistance(Coordinates coordinates, Coordinates coordinates2) {
 	// Calculate the Euclidean distance
-
-	double distanceReal = Math.pow(coordinates.getX() - coordinates2.getX(), 2);
-	distanceReal += Math.pow(coordinates.getY() - coordinates2.getY(), 2);
-	// distanceReal = Math.sqrt(distanceReal); // squared distance, no need to take sqrt
-	distanceReal = Math.round(distanceReal);
-
+	double distanceReal = (coordinates.getX() - coordinates2.getX()) * (coordinates.getX() - coordinates2.getX());
+	distanceReal += (coordinates.getY() - coordinates2.getY()) * (coordinates.getY() - coordinates2.getY());
 	return (long) distanceReal;
     }
 
