@@ -1,5 +1,4 @@
 
-
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class ClarkeWrightTest {
 	int nodeB = 1;
 	int nodeC = 2;
 	int nodeH = 3;
-	List<Integer> nodes = new ArrayList();
+	List<Integer> nodes = new ArrayList<Integer>();
 	nodes.add(nodeA);
 	nodes.add(nodeB);
 	nodes.add(nodeC);
