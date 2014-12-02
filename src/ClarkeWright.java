@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -31,50 +29,51 @@ public class ClarkeWright implements TourConstructStrategy {
 	// remove hub from nodes
 	int hub = rand.nextInt(nodes.size());
 	nodes.remove(hub);
-	List<Edge> savings = getShortcuts(graphData, hub);
-	// Sort savings in decreasing order
-	EdgeDistanceComparer edgeComparer = new EdgeDistanceComparer();
-	Collections.sort(savings, edgeComparer);
-	// construct tour
-	Map<Integer, List<Integer>> partialTour = new HashMap<>();
-	for (Integer node : nodes) {
-	    List<Integer> neighbours = new ArrayList<Integer>();
-	    partialTour.put(node, neighbours);
-	}
-
-	int edgeIndex = 0;
-	while (nodes.size() > 2) {
-	    Edge edge = savings.get(edgeIndex);
-	    int nodeA = edge.getNodeA();
-	    int nodeB = edge.getNodeB();
-	    if (partialTour.get(nodeA).size() < 2 && partialTour.get(nodeB).size() < 2) {
-		if (!createsCycle(partialTour, nodeA, nodeB)) {
-		    partialTour.get(nodeA).add(nodeB);
-		    partialTour.get(nodeB).add(nodeA);
-		}
-		if (partialTour.get(nodeA).size() == 2) {
-		    nodes.remove(nodeA);
-		}
-		if (partialTour.get(nodeB).size() == 2) {
-		    nodes.remove(nodeB);
-		}
-	    }
-
-	    edgeIndex++;
-	}
-
-	// Add remaining edges to the partial tour;
-	Integer[] remainingNodes = nodes.toArray(new Integer[2]);
-	int remainingNode1 = remainingNodes[0];
-	int remainingNode2 = remainingNodes[1];
-	List<Integer> start = new ArrayList<Integer>();
-	start.add(remainingNode1);
-	partialTour.put(hub, start);
-	partialTour.get(remainingNode1).add(hub);
-	partialTour.get(remainingNode2).add(hub);
-	List<Integer> tourList = getTour(partialTour, hub);
-	Tour tour = new Tour(tourList);
-	return tour;
+	// List<Edge> savings = getShortcuts(graphData, hub);
+	// // Sort savings in decreasing order
+	// EdgeDistanceComparer edgeComparer = new EdgeDistanceComparer();
+	// Collections.sort(savings, edgeComparer);
+	// // construct tour
+	// Map<Integer, List<Integer>> partialTour = new HashMap<>();
+	// for (Integer node : nodes) {
+	// List<Integer> neighbours = new ArrayList<Integer>();
+	// partialTour.put(node, neighbours);
+	// }
+	//
+	// int edgeIndex = 0;
+	// while (nodes.size() > 2) {
+	// Edge edge = savings.get(edgeIndex);
+	// int nodeA = edge.getNodeA();
+	// int nodeB = edge.getNodeB();
+	// if (partialTour.get(nodeA).size() < 2 &&
+	// partialTour.get(nodeB).size() < 2) {
+	// if (!createsCycle(partialTour, nodeA, nodeB)) {
+	// partialTour.get(nodeA).add(nodeB);
+	// partialTour.get(nodeB).add(nodeA);
+	// }
+	// if (partialTour.get(nodeA).size() == 2) {
+	// nodes.remove(nodeA);
+	// }
+	// if (partialTour.get(nodeB).size() == 2) {
+	// nodes.remove(nodeB);
+	// }
+	// }
+	//
+	// edgeIndex++;
+	// }
+	//
+	// // Add remaining edges to the partial tour;
+	// Integer[] remainingNodes = nodes.toArray(new Integer[2]);
+	// int remainingNode1 = remainingNodes[0];
+	// int remainingNode2 = remainingNodes[1];
+	// List<Integer> start = new ArrayList<Integer>();
+	// start.add(remainingNode1);
+	// partialTour.put(hub, start);
+	// partialTour.get(remainingNode1).add(hub);
+	// partialTour.get(remainingNode2).add(hub);
+	// List<Integer> tourList = getTour(partialTour, hub);
+	// Tour tour = new Tour(tourList);
+	return null;
     }
 
     private List<Integer> getTour(Map<Integer, List<Integer>> partialGraph, int hub) {
@@ -156,27 +155,37 @@ public class ClarkeWright implements TourConstructStrategy {
     }
 
     /**
-     * Given a graphData Returns a list of edges with all possible edges between
-     * nodes that are not the hub.
+     * Given a graphData and a hub returns a long[][] where each row represent
+     * an unique edge. An edge is represented as a long[] with three position
+     * [0] = node1,[1]= node2,[2]=saving, saving=
+     * (dist(nodeA,hub)+dist(nodeB,hub))-dist(nodeA,nodeB)) The long[][]
+     * contains all possible unique edges in the graph, which does not contains
+     * the hub.
      * 
      * @param graphData
      *            The GraphData that the result is based on
      * @param hub
      *            the hub node;
      */
-    private List<Edge> getShortcuts(GraphData graphData, int hub) {
+    public long[][] getShortcuts(GraphData graphData, int hub) {
 	int nNodes = graphData.numberOfNodes();
-	ArrayList<Edge> shortcuts = new ArrayList<Edge>();
+	int nUniqueEdges = (((nNodes - 1) * ((nNodes - 1) + 1)) / 2) - (nNodes - 1);
+	long[][] uniqueEdges = new long[nUniqueEdges][3];
+	int edgeIndex = 0;
 	for (int i = 0; i < nNodes; i++) {
 	    for (int j = i + 1; j < nNodes; j++) {
 		if (j != hub && i != hub) {
-		    Edge shortcut = new Edge(i, j, graphData.getDistance(i, j));
-		    shortcuts.add(shortcut);
+		    // i and j are not equal to hub
+		    long saving = (graphData.getDistance(i, hub) + graphData.getDistance(j, hub))
+			    - graphData.getDistance(i, j);
+		    uniqueEdges[edgeIndex][0] = i;
+		    uniqueEdges[edgeIndex][1] = j;
+		    uniqueEdges[edgeIndex][2] = saving;
+		    edgeIndex++;
 		}
 
 	    }
 	}
-	return shortcuts;
+	return uniqueEdges;
     }
-
 }
