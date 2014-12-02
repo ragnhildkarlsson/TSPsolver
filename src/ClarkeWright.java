@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ public class ClarkeWright implements TourConstructStrategy {
     }
 
     @Override
-    public Tour constructTour(GraphData graphData) {
+    public Tour constructTour(GraphData graphData, EdgeDistanceComparator edgeComparator) {
 	int nNodes = graphData.numberOfNodes();
 	Set<Integer> nodes = new HashSet<Integer>(nNodes);
 	for (int i = 0; i < nNodes; i++) {
@@ -29,10 +30,10 @@ public class ClarkeWright implements TourConstructStrategy {
 	// remove hub from nodes
 	int hub = rand.nextInt(nodes.size());
 	nodes.remove(hub);
-	// List<Edge> savings = getShortcuts(graphData, hub);
-	// // Sort savings in decreasing order
-	// EdgeDistanceComparer edgeComparer = new EdgeDistanceComparer();
-	// Collections.sort(savings, edgeComparer);
+	long[][] savings = getShortcuts(graphData, hub);
+	// Sort savings in increasing order
+	Arrays.sort(savings, edgeComparator);
+	// we want to have decreasing order so we go backwards;
 	// // construct tour
 	// Map<Integer, List<Integer>> partialTour = new HashMap<>();
 	// for (Integer node : nodes) {
