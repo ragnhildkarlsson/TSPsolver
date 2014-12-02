@@ -16,7 +16,6 @@ public class GraphDataTest {
 		graphData.calculateDistance(node0, node1));
 
 	double[] node2 = { 0.9, 0 };
-	Coordinates coord2 = new Coordinates(0.9, 0);
 	assertEquals("Integer square distance between points: 0 and 0.9 on a line should be 0", 0,
 		graphData.calculateDistance(node0, node2));
 
