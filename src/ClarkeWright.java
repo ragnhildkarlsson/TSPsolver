@@ -18,11 +18,10 @@ public class ClarkeWright implements TourConstructStrategy {
     @Override
     public Tour constructTour(GraphData graphData) {
 	Set<Integer> nodes = new HashSet<Integer>(graphData.getNodes());
-	if(nodes.size() == 1){
-		return new Tour(new ArrayList<Integer>(nodes));
+	if (nodes.size() <= 3) {
+	    return new Tour(new ArrayList<Integer>(nodes));
 	}
-	
-	
+
 	// remove hub from nodes
 	int hub = rand.nextInt(nodes.size());
 	nodes.remove(hub);
