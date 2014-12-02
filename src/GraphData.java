@@ -1,10 +1,11 @@
 public class GraphData {
 
     private long[][] distanceMatrix;
+    private int numberOfNodes;
 
     public GraphData(double[][] nodes) {
 
-	int numberOfNodes = nodes.length;
+	this.numberOfNodes = nodes.length;
 
 	// Create and fill in the distances of the nodes
 	this.distanceMatrix = new long[numberOfNodes][numberOfNodes];
@@ -55,7 +56,7 @@ public class GraphData {
     }
 
     public int numberOfNodes() {
-	return numberOfNodes();
+	return numberOfNodes;
     }
 
 }
