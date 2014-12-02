@@ -1,17 +1,11 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 public class GraphData {
 
     private long[][] distanceMatrix;
-    private Map<Integer, Coordinates> nodeCoordinates;
+    private int numberOfNodes;
 
-    public GraphData(Map<Integer, Coordinates> nodeMap) {
-	// Store the mapping between nodes and coordinates
-	this.nodeCoordinates = nodeMap;
+    public GraphData(double[][] nodes) {
 
-	int numberOfNodes = nodeMap.size();
+	this.numberOfNodes = nodes.length;
 
 	// Create and fill in the distances of the nodes
 	this.distanceMatrix = new long[numberOfNodes][numberOfNodes];
@@ -19,33 +13,35 @@ public class GraphData {
 	for (int i = 0; i < numberOfNodes; i++) {
 	    for (int j = i; j < numberOfNodes; j++) { // j = i : no need to
 						      // recalculate old values
-		distanceMatrix[i][j] = calculateDistance(nodeMap.get(i), nodeMap.get(j));
+		distanceMatrix[i][j] = calculateDistance(nodes[i], nodes[j]);
 		distanceMatrix[j][i] = distanceMatrix[i][j]; // symmetry
 	    }
 	}
 
     }
 
-    /**
-     * Returns the squared distance of the two given coordinates in the plane.
-     * 
-     * @param coordinates
-     * @param coordinates2
-     * @return
-     */
-    public long calculateDistance(Coordinates coordinates, Coordinates coordinates2) {
-	// Calculate the Euclidean distance
-	double distanceReal = (coordinates.getX() - coordinates2.getX()) * (coordinates.getX() - coordinates2.getX());
-	distanceReal += (coordinates.getY() - coordinates2.getY()) * (coordinates.getY() - coordinates2.getY());
-	return (long) distanceReal;
-    }
+    // /**
+    // * Returns the squared distance of the two given coordinates in the plane.
+    // *
+    // * @param coordinates
+    // * @param coordinates2
+    // * @return
+    // */
+    // public long calculateDistance(Coordinates coordinates, Coordinates
+    // coordinates2) {
+    // // Calculate the Euclidean distance
+    // double distanceReal = (coordinates.getX() - coordinates2.getX()) *
+    // (coordinates.getX() - coordinates2.getX());
+    // distanceReal += (coordinates.getY() - coordinates2.getY()) *
+    // (coordinates.getY() - coordinates2.getY());
+    // return (long) distanceReal;
+    // }
 
-    /**
-     * @return an unsorted list of all the nodes in this Graph.
-     */
-    public List<Integer> getNodes() {
-	List<Integer> listOFNodes = new ArrayList<>(this.nodeCoordinates.keySet());
-	return listOFNodes;
+    public long calculateDistance(double[] node1, double[] node2) {
+	// Calculate the Euclidean distance
+	double distanceReal = (node1[0] - node2[0]) * (node1[0] - node2[0]);
+	distanceReal += (node1[1] - node2[1]) * (node1[1] - node2[1]);
+	return (long) distanceReal;
     }
 
     /**
@@ -60,7 +56,7 @@ public class GraphData {
     }
 
     public int numberOfNodes() {
-	return this.nodeCoordinates.size();
+	return numberOfNodes;
     }
 
 }

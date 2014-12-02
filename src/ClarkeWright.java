@@ -17,9 +17,15 @@ public class ClarkeWright implements TourConstructStrategy {
 
     @Override
     public Tour constructTour(GraphData graphData) {
-	Set<Integer> nodes = new HashSet<Integer>(graphData.getNodes());
-	if (nodes.size() <= 3) {
-	    return new Tour(new ArrayList<Integer>(nodes));
+	int nNodes = graphData.numberOfNodes();
+	Set<Integer> nodes = new HashSet<Integer>(nNodes);
+	for (int i = 0; i < nNodes; i++) {
+	    nodes.add(i);
+	}
+	if (nodes.size() < 4) {
+	    ArrayList<Integer> tourList = new ArrayList<Integer>();
+	    tourList.addAll(nodes);
+	    return new Tour(tourList);
 	}
 
 	// remove hub from nodes

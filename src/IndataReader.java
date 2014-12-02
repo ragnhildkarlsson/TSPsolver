@@ -1,6 +1,3 @@
-import java.util.HashMap;
-import java.util.Map;
-
 public class IndataReader {
 
     public IndataReader() {
@@ -8,20 +5,19 @@ public class IndataReader {
 
     public GraphData read(Kattio kattio) {
 
-	Map<Integer, Coordinates> nodeMap = new HashMap<>();
-
 	// Read in the number of nodes
 	int numberOfNodes = kattio.getInt();
-
+	double[][] nodes = new double[numberOfNodes][2];
 	// for each node read the coordinates
 	for (int i = 0; i < numberOfNodes; i++) {
 	    double x = kattio.getDouble();
 	    double y = kattio.getDouble();
-	    nodeMap.put(i, new Coordinates(x, y));
+	    nodes[i][0] = x;
+	    nodes[i][1] = y;
 
 	}
 
-	return new GraphData(nodeMap);
+	return new GraphData(nodes);
 
     }
 }

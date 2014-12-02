@@ -50,7 +50,6 @@ public class ClarkeWrightTest {
 	Mockito.when(mockRand.nextInt(4)).thenReturn(3);
 	GraphData mockGraphData = Mockito.mock(GraphData.class);
 	Mockito.when(mockGraphData.numberOfNodes()).thenReturn(4);
-	Mockito.when(mockGraphData.getNodes()).thenReturn(nodes);
 	// Mock distances
 	Mockito.when(mockGraphData.getDistance(nodeA, nodeH)).thenReturn((long) 3);
 	Mockito.when(mockGraphData.getDistance(nodeA, nodeB)).thenReturn((long) 2);
