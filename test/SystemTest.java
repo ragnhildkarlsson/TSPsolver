@@ -13,7 +13,7 @@ public class SystemTest {
 	IndataReader ir = new IndataReader();
 	TSPsolver solver = new TSPsolver();
 	Random rand = new Random();
-	ClarkeWright cw = new ClarkeWright(rand);
+	EdgeDistanceComparator edgeDistanceComparator = new EdgeDistanceComparator();
 	long startTimeTotal = 0;
 	long elapsedTimeTotal;
 	long startTimeRead = 0;
@@ -26,18 +26,20 @@ public class SystemTest {
 	long worstTotalTime = 0;
 	long worstReadTime = 0;
 	long worstSolveTime = 0;
-
-	for (int i = 0; i < 100; i++) {
+	long sumRuntime = 0;
+	double avverageRunTime;
+	int nTests = 100;
+	for (int i = 0; i < nTests; i++) {
 	    String indata = generator.getTestCase();
 	    InputStream indataStream = new ByteArrayInputStream(indata.getBytes(StandardCharsets.UTF_8));
 	    Kattio io = new Kattio(indataStream);
 	    startTimeTotal = System.currentTimeMillis();
-
 	    startTimeRead = System.currentTimeMillis();
 	    GraphData graphData = ir.read(io);
 	    elapsedTimeRead = System.currentTimeMillis() - startTimeRead;
 	    System.err.println("Time to calculate graphData " + elapsedTimeRead);
 	    startTimeSolve = System.currentTimeMillis();
+	    ClarkeWright cw = new ClarkeWright(rand, edgeDistanceComparator);
 	    solver.solve(graphData, cw);
 	    elapsedTimeSolve = System.currentTimeMillis() - startTimeSolve;
 	    System.err.println("Time to calculate solution " + elapsedTimeSolve);
@@ -55,11 +57,13 @@ public class SystemTest {
 	    if (elapsedTimeTotal > worstTotalTime) {
 		worstTotalTime = elapsedTimeTotal;
 	    }
+	    sumRuntime = sumRuntime + elapsedTimeTotal;
 	}
+	avverageRunTime = (double) sumRuntime / (double) nTests;
 	System.err.println("max time to do read" + worstReadTime);
 	System.err.println("max time to do solve" + worstSolveTime);
 	System.err.println("max time to run program in total " + worstTotalTime);
-
+	System.err.println("average runtime was " + avverageRunTime);
 	System.out.println("The worst indata to read was");
 	System.out.println(worstIndataRead);
 
