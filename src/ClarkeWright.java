@@ -9,13 +9,15 @@ import java.util.Set;
 public class ClarkeWright implements TourConstructStrategy {
 
     private Random rand;
+    private EdgeDistanceComparator edgeComparator;
 
-    public ClarkeWright(Random rand) {
+    public ClarkeWright(Random rand, EdgeDistanceComparator edgeComparator) {
 	this.rand = rand;
+	this.edgeComparator = edgeComparator;
     }
 
     @Override
-    public Tour constructTour(GraphData graphData, EdgeDistanceComparator edgeComparator) {
+    public Tour constructTour(GraphData graphData) {
 	int nNodes = graphData.numberOfNodes();
 	Set<Integer> nodes = new HashSet<Integer>(nNodes);
 	for (int i = 0; i < nNodes; i++) {
@@ -34,60 +36,36 @@ public class ClarkeWright implements TourConstructStrategy {
 	// Sort savings in increasing order
 	Arrays.sort(savings, edgeComparator);
 	// we want to have decreasing order so we go backwards;
-	// // construct tour
-	// Map<Integer, List<Integer>> partialTour = new HashMap<>();
-	// for (Integer node : nodes) {
-	// List<Integer> neighbours = new ArrayList<Integer>();
-	// partialTour.put(node, neighbours);
-	// }
-	//
-	// int edgeIndex = 0;
-	// while (nodes.size() > 2) {
-	// Edge edge = savings.get(edgeIndex);
-	// int nodeA = edge.getNodeA();
-	// int nodeB = edge.getNodeB();
-	// if (partialTour.get(nodeA).size() < 2 &&
-	// partialTour.get(nodeB).size() < 2) {
-	// if (!createsCycle(partialTour, nodeA, nodeB)) {
-	// partialTour.get(nodeA).add(nodeB);
-	// partialTour.get(nodeB).add(nodeA);
-	// }
-	// if (partialTour.get(nodeA).size() == 2) {
-	// nodes.remove(nodeA);
-	// }
-	// if (partialTour.get(nodeB).size() == 2) {
-	// nodes.remove(nodeB);
-	// }
-	// }
-	//
-	// edgeIndex++;
-	// }
-	//
-	// // Add remaining edges to the partial tour;
-	// Integer[] remainingNodes = nodes.toArray(new Integer[2]);
-	// int remainingNode1 = remainingNodes[0];
-	// int remainingNode2 = remainingNodes[1];
-	// List<Integer> start = new ArrayList<Integer>();
-	// start.add(remainingNode1);
-	// partialTour.put(hub, start);
-	// partialTour.get(remainingNode1).add(hub);
-	// partialTour.get(remainingNode2).add(hub);
-	// List<Integer> tourList = getTour(partialTour, hub);
-	// Tour tour = new Tour(tourList);
-	return null;
-    }
+	// construct tour
+	PartialGraph partialTour = new PartialGraph(nNodes);
+	int edgeIndex = savings.length - 1;
+	for (int i = 0; i < nNodes; i++) {
 
-    private List<Integer> getTour(Map<Integer, List<Integer>> partialGraph, int hub) {
-	ArrayList<Integer> tour = new ArrayList<Integer>();
-	int nodeBeforeInTour = hub;
-	int node = partialGraph.get(hub).get(0);
-	tour.add(node);
-	while (node != hub) {
-	    int neighbor = getOtherInt(partialGraph.get(node), nodeBeforeInTour);
-	    tour.add(neighbor);
-	    nodeBeforeInTour = node;
-	    node = neighbor;
 	}
+	while (nodes.size() > 2) {
+	    long[] edge = savings[edgeIndex];
+	    int nodeA = (int) edge[0];
+	    int nodeB = (int) edge[1];
+	    if (partialTour.edgeCanBeAdded(nodeA, nodeB)) {
+		partialTour.addEdge(nodeA, nodeB);
+		if (partialTour.getnNeighbors(nodeA) == 2) {
+		    nodes.remove(nodeA);
+		}
+		if (partialTour.getnNeighbors(nodeB) == 2) {
+		    nodes.remove(nodeB);
+		}
+	    }
+
+	    edgeIndex--;
+	}
+
+	// Add remaining edges to the partial tour;
+	Integer[] remainingNodes = nodes.toArray(new Integer[2]);
+	int remainingNode1 = remainingNodes[0];
+	int remainingNode2 = remainingNodes[1];
+	partialTour.addEdge(remainingNode1, hub);
+	partialTour.addEdge(remainingNode2, hub);
+	Tour tour = partialTour.getTour(hub);
 	return tour;
     }
 
