@@ -35,19 +35,13 @@ public class ClarkeWright implements TourConstructStrategy {
 	hub = 0;
 	nodes.remove(hub);
 	long[][] savings = getShortcuts(graphData, hub);
-	if (savings.length == 0) {
 
-	}
 	// Sort savings in increasing order
 	Arrays.sort(savings, edgeComparator);
 	// we want to have decreasing order so we go backwards;
 	// construct tour
 	PartialGraph partialTour = new PartialGraph(nNodes);
 	int edgeIndex = savings.length - 1;
-	for (int i = 0; i < nNodes; i++) {
-	    return getDefaultTour(nNodes);
-	}
-
 	while (nodes.size() > 2) {
 	    long[] edge = savings[edgeIndex];
 	    int nodeA = (int) edge[0];
@@ -86,18 +80,6 @@ public class ClarkeWright implements TourConstructStrategy {
 	}
 	int indexOfOther = (indexOfFirst + 1) % 2;
 	return integers.get(indexOfOther);
-    }
-
-    /**
-     * 
-     */
-    private Tour getDefaultTour(int nNodes) {
-	ArrayList<Integer> list = new ArrayList<Integer>();
-	for (int i = 0; i < nNodes; i++) {
-	    list.add(i);
-	}
-	Tour tour = new Tour(list);
-	return tour;
     }
 
     /**
