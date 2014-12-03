@@ -34,10 +34,10 @@ public class TwoOptTest {
 		// prepare a mock GraphDataLight
 
 		GraphDataLight mockData = Mockito.mock(GraphDataLight.class);
-		long[][] edgesFrom0 = { { 0, 1, 1 }, { 0, 3, 1 }, { 0, 2, 2 } }; // include all edges to see that works
-		long[][] edgesFrom1 = { { 1, 0, 1 }, { 1, 2, 1 } }; // skip {1,3,2} has it should work anyway
-		long[][] edgesFrom2 = { { 2, 3, 1 }, { 2, 1, 1 }, { 2, 0, 2 } };
-		long[][] edgesFrom3 = { { 3, 0, 1 }, { 3, 2, 1 } };
+		int[][] edgesFrom0 = { { 0, 1, 1 }, { 0, 3, 1 }, { 0, 2, 2 } }; // include all edges to see that works
+		int[][] edgesFrom1 = { { 1, 0, 1 }, { 1, 2, 1 } }; // skip {1,3,2} has it should work anyway
+		int[][] edgesFrom2 = { { 2, 3, 1 }, { 2, 1, 1 }, { 2, 0, 2 } };
+		int[][] edgesFrom3 = { { 3, 0, 1 }, { 3, 2, 1 } };
 
 		Mockito.when(mockData.getClosestKNeighbors((short) 0)).thenReturn(edgesFrom0);
 		Mockito.when(mockData.getClosestKNeighbors((short) 1)).thenReturn(edgesFrom1);

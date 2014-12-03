@@ -2,9 +2,9 @@ import java.util.Arrays;
 
 public class GraphDataLight {
 
-	private int numberOfNodes;
+	private int nNodes;
 	private int k;
-	private long[][][] neighbourList;
+	private int[][][] neighbourList;
 	private EdgeDistanceComparator comparator;
 
 	/**
@@ -12,34 +12,31 @@ public class GraphDataLight {
 	 * comparator to compare edgeDistances.
 	 */
 	public GraphDataLight(double[][] nodesCoordinates, int NeigboursToStore, EdgeDistanceComparator comparator) {
-		this.numberOfNodes = nodesCoordinates.length;
+		this.nNodes = nodesCoordinates.length;
 		this.comparator = comparator;
-		if (numberOfNodes <= NeigboursToStore) {
-			NeigboursToStore = numberOfNodes - 1;
+		if (nNodes <= NeigboursToStore) {
+			NeigboursToStore = nNodes - 1;
 		}
 		this.k = NeigboursToStore;
 		// If the number nodes are less than 1 there are no neighbors
-		if (numberOfNodes < 2) {
+		if (nNodes < 2) {
 			this.neighbourList = null;
 		} else {
 
-			int numberOfEdges = numberOfNodes - 1;
-
-			this.neighbourList = new long[numberOfNodes][k][3];
-			for (int currentNode = 0; currentNode < numberOfNodes; currentNode++) {
+			this.neighbourList = new int[nNodes][k][3];
+			for (int currentNode = 0; currentNode < nNodes; currentNode++) {
 				// long[][] edges = new long[numberOfEdges][3];
-				int edgeIndex = 0;
 
-				long[][] shortNeighborArray = generateShortNeighbourList(currentNode, nodesCoordinates);
+				int[][] shortNeighborArray = generateShortNeighbourList(currentNode, nodesCoordinates);
 				this.neighbourList[currentNode] = shortNeighborArray;
 			}
 		}
 	}
 
-	private long[][] generateShortNeighbourList(int currentNode, double[][] nodesCoordinates) {
+	private int[][] generateShortNeighbourList(int currentNode, double[][] nodesCoordinates) {
 		int edgeIndex = 0;
-		long[][] edges = new long[numberOfNodes - 1][3];
-		for (int neighbourNode = 0; neighbourNode < numberOfNodes; neighbourNode++) {
+		long[][] edges = new long[nNodes - 1][3];
+		for (int neighbourNode = 0; neighbourNode < nNodes; neighbourNode++) {
 
 			if (currentNode != neighbourNode) { // don't add the edge
 												// between the same node
@@ -53,6 +50,7 @@ public class GraphDataLight {
 				edgeIndex++;
 			}
 		}
+
 		return shortAndSort(edges, k);
 	}
 
@@ -63,7 +61,7 @@ public class GraphDataLight {
 		return (long) distanceReal;
 	}
 
-	public long[][] shortAndSort(long[][] edges, int neigboursToStore) {
+	public int[][] shortAndSort(long[][] edges, int neigboursToStore) {
 		if (edges.length < neigboursToStore) {
 			throw new IllegalStateException("Trying to shorten a list to size " + neigboursToStore
 					+ " but it is already of length " + edges.length);
@@ -71,9 +69,12 @@ public class GraphDataLight {
 		// Sort in increasing order
 		Arrays.sort(edges, comparator);
 		// Cut away all excess neighbors
-		long[][] lessEdges = new long[neigboursToStore][3];
+		int[][] lessEdges = new int[neigboursToStore][3];
 		for (int i = 0; i < neigboursToStore; i++) {
-			lessEdges[i] = edges[i];
+			int sqrtDistance = (int) Math.sqrt(edges[i][2]);
+			lessEdges[i][0] = (int) edges[i][0];
+			lessEdges[i][1] = (int) edges[i][1];
+			lessEdges[i][2] = sqrtDistance;
 		}
 		return lessEdges;
 	}
@@ -82,7 +83,11 @@ public class GraphDataLight {
 	 * Returns the K closest neighbors to the given node, where K is the initially set max value of neighbors to be
 	 * stored.
 	 */
-	public long[][] getClosestKNeighbors(short node) {
+	public int[][] getClosestKNeighbors(short node) {
 		return this.neighbourList[node];
+	}
+
+	public short numberOfNodes() {
+		return (short) this.nNodes;
 	}
 }

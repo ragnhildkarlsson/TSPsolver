@@ -7,9 +7,10 @@ import java.util.Set;
 
 public class TwoOpt {
 
-	private Set<Integer> shelf;
-	private Queue<Integer> fifoQueue;
-	private int[] currentTour;
+	// private final int ITER = Integer.MAX_VALUE;
+	private Set<Short> shelf;
+	private Queue<Short> fifoQueue;
+	private short[] currentTour;
 	private int numberOfNodes;
 	private GraphDataLight graphDataLight;
 
@@ -33,32 +34,34 @@ public class TwoOpt {
 		}
 
 		// Try to optimize as long as there is a node in the queue
+		int iter = 0;
 		while (!fifoQueue.isEmpty()) {
-			int currentNode = fifoQueue.poll();
+			iter++;
+			short currentNode = fifoQueue.poll();
 			// Get the next node in the order defined by currentTour.
-			int currentAheadNeighbour = getNeighborAhead(currentNode);
-			int currentBeforeNeighbour = getNeighborBefore(currentNode);
+			short currentAheadNeighbour = getNeighborAhead(currentNode);
+			short currentBeforeNeighbour = getNeighborBefore(currentNode);
 			// Check if this distance is stored in GraphDataLight (if not its
 			// bigger than all stored)
-			long distance = getDistanceIfExist(currentNode, currentAheadNeighbour);
+			int distance = getDistanceIfExist(currentNode, currentAheadNeighbour);
 			// go through the neighbor list for the current node to find a node
 			// which has shorter distance
-			long[][] neighbors = this.graphDataLight.getClosestKNeighbors((short) currentNode);
+			int[][] neighbors = this.graphDataLight.getClosestKNeighbors((short) currentNode);
 			boolean updatedTour = false;
 			for (int i = 0; i < neighbors.length; i++) {
 				if (neighbors[i][2] < distance && i != currentBeforeNeighbour) {
 					// found a shorter distance! this edge would be a better choice
-					int betterNeighbour = (int) neighbors[i][1];
-					int betterNeighboursNeighbour = getNeighborAhead(betterNeighbour);
+					short betterNeighbour = (short) neighbors[i][1];
+					short betterNeighboursNeighbour = getNeighborAhead(betterNeighbour);
 					// Check if the other edge needed also is a better choice
 					long otherEdgeCurrentDistance = getDistanceIfExist(betterNeighbour, betterNeighboursNeighbour);
 					long otherEdgepossiblyDistance = getDistanceIfExist(currentAheadNeighbour,
 							betterNeighboursNeighbour);
 					if (otherEdgepossiblyDistance < otherEdgeCurrentDistance) {
 						// a perfect match, both new edges are shorter than the originals, lets exchange!
-						int[] newTour = createNewTour(currentNode, currentAheadNeighbour, betterNeighbour,
+						short[] newTour = createNewTour(currentNode, currentAheadNeighbour, betterNeighbour,
 								betterNeighboursNeighbour);
-						fifoQueue.add(currentNode); // put the node last in queue
+						fifoQueue.add((short) currentNode); // put the node last in queue
 						removeFromShelf(currentAheadNeighbour, betterNeighbour, betterNeighboursNeighbour);
 						this.currentTour = newTour;
 						updatedTour = true;
@@ -75,7 +78,7 @@ public class TwoOpt {
 		// Return the resulting tour
 		List<Integer> finalTour = new ArrayList<>(numberOfNodes);
 		for (int i = 0; i < numberOfNodes; i++) {
-			finalTour.add(this.currentTour[i]);
+			finalTour.add((int) this.currentTour[i]);
 		}
 		Tour result = new Tour(finalTour);
 		return result;
@@ -84,7 +87,7 @@ public class TwoOpt {
 	/**
 	 * Removes the three nodes from the shelf if present and puts them back into the queue.
 	 */
-	private void removeFromShelf(int currentNeighbour, int betterNeighbour, int betterNeighboursNeighbour) {
+	private void removeFromShelf(short currentNeighbour, short betterNeighbour, short betterNeighboursNeighbour) {
 		if (this.shelf.remove(currentNeighbour)) {
 			this.fifoQueue.add(currentNeighbour);
 		}
@@ -99,11 +102,11 @@ public class TwoOpt {
 
 	}
 
-	private int[] createNewTour(int currentNode, int currentNeighbour, int betterNeighbour,
-			int betterNeighboursNeighbour) {
-		int[] newTour = new int[numberOfNodes];
-		int node = betterNeighboursNeighbour;
-		int index = 0;
+	private short[] createNewTour(short currentNode, short currentNeighbour, short betterNeighbour,
+			short betterNeighboursNeighbour) {
+		short[] newTour = new short[numberOfNodes];
+		short node = betterNeighboursNeighbour;
+		short index = 0;
 		// Get the first part of the tour
 		while (node != currentNode) {
 			newTour[index] = node;
@@ -127,50 +130,50 @@ public class TwoOpt {
 		return newTour;
 	}
 
-	private long getDistanceIfExist(int mainNode, int possibleNeighbor) {
-		long[][] edges = this.graphDataLight.getClosestKNeighbors((short) mainNode);
+	private int getDistanceIfExist(int mainNode, int possibleNeighbor) {
+		int[][] edges = this.graphDataLight.getClosestKNeighbors((short) mainNode);
 		for (int i = 0; i < edges.length; i++) {
 			if (edges[i][1] == possibleNeighbor) {
 				return edges[i][2];
 			}
 		}
-		return Long.MAX_VALUE;
+		return Integer.MAX_VALUE;
 	}
 
-	private int getNeighborAhead(int currentNode) {
-		int indexOfCurrentNode = getIndexOf(currentNode);
-		int nextIndex = (indexOfCurrentNode + 1) % currentTour.length;
+	private short getNeighborAhead(short currentNode) {
+		short indexOfCurrentNode = getIndexOf(currentNode);
+		short nextIndex = (short) ((indexOfCurrentNode + 1) % currentTour.length);
 		return currentTour[nextIndex];
 	}
 
-	private int getNeighborBefore(int currentNode) {
-		int indexOfCurrentNode = getIndexOf(currentNode);
-		int nextIndex = (indexOfCurrentNode - 1);
+	private short getNeighborBefore(short currentNode) {
+		short indexOfCurrentNode = getIndexOf(currentNode);
+		short nextIndex = (short) (indexOfCurrentNode - 1);
 		if (nextIndex < 0) {
-			nextIndex = currentTour.length - 1;
+			nextIndex = (short) (currentTour.length - 1);
 		}
 
 		return currentTour[nextIndex];
 	}
 
-	private int getIndexOf(int nodeToFind) {
-		for (int i = 0; i < numberOfNodes; i++) {
+	private short getIndexOf(short nodeToFind) {
+		for (short i = 0; i < numberOfNodes; i++) {
 			if (currentTour[i] == nodeToFind) {
 				return i;
 			}
 		}
-		return Integer.MIN_VALUE;
+		return Short.MAX_VALUE;
 	}
 
-	private int[] getArray(Tour tour) {
-		int[] intTour = new int[tour.getTourList().size()];
-		int index = 0;
+	private short[] getArray(Tour tour) {
+		short[] arrayTour = new short[tour.getTourList().size()];
+		short index = 0;
 		for (Integer integer : tour.getTourList()) {
-			intTour[index] = (int) integer;
+			arrayTour[index] = (short) (int) integer;
 			index++;
 
 		}
-		return intTour;
+		return arrayTour;
 	}
 
 }

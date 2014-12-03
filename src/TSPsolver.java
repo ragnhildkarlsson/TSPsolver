@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class TSPsolver {
@@ -11,20 +10,21 @@ public class TSPsolver {
 		return tour.getTourList();
 	}
 
-	public List<Integer> solveLight(double[][] coordinates, TourConstructStrategy constructStrategy, TwoOpt opt) {
-
+	public List<Integer> solveLight(double[][] coordinates, NearestNeighbour nn, TwoOpt opt) {
+		EdgeDistanceComparator edgeComparator = new EdgeDistanceComparator();
+		GraphDataLight data = new GraphDataLight(coordinates, 20, edgeComparator);
 		// Construct an initial tour
-		List<Integer> randomTour = new ArrayList<>();
-		for (int i = 0; i < coordinates.length; i++) {
-			randomTour.add(i);
 
-		}
-		Tour initialTour = new Tour(randomTour);
+		// List<Integer> randomTour = new ArrayList<>();
+		// for (int i = 0; i < coordinates.length; i++) {
+		// randomTour.add(i);
+		// }
+		Tour tour = nn.constructLightTour(data);
 
 		// try to optimize it
-		EdgeDistanceComparator edgeComparator = new EdgeDistanceComparator();
-		Tour optimized = opt.optimizeTour(initialTour, new GraphDataLight(coordinates, 20, edgeComparator));
-		return optimized.getTourList();
+
+		tour = opt.optimizeTour(tour, data);
+		return tour.getTourList();
 	}
 
 }
