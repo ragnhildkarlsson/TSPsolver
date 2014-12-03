@@ -10,7 +10,8 @@ public class Main {
 	GraphData graphData = ir.read(io);
 	TSPsolver solver = new TSPsolver();
 	Random rand = new Random();
-	TourConstructStrategy constructStrategy = new ClarkeWright(rand);
+	EdgeDistanceComparator edgeDistanceComparator = new EdgeDistanceComparator();
+	TourConstructStrategy constructStrategy = new ClarkeWright(rand, edgeDistanceComparator);
 	List<Integer> res = solver.solve(graphData, constructStrategy);
 	for (Integer node : res) {
 	    io.println(node);
