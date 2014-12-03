@@ -14,7 +14,6 @@ public class SystemTest {
 	TSPsolver solver = new TSPsolver();
 	Random rand = new Random();
 	EdgeDistanceComparator edgeDistanceComparator = new EdgeDistanceComparator();
-	ClarkeWright cw = new ClarkeWright(rand, edgeDistanceComparator);
 	long startTimeTotal = 0;
 	long elapsedTimeTotal;
 	long startTimeRead = 0;
@@ -35,12 +34,12 @@ public class SystemTest {
 	    InputStream indataStream = new ByteArrayInputStream(indata.getBytes(StandardCharsets.UTF_8));
 	    Kattio io = new Kattio(indataStream);
 	    startTimeTotal = System.currentTimeMillis();
-
 	    startTimeRead = System.currentTimeMillis();
 	    GraphData graphData = ir.read(io);
 	    elapsedTimeRead = System.currentTimeMillis() - startTimeRead;
 	    System.err.println("Time to calculate graphData " + elapsedTimeRead);
 	    startTimeSolve = System.currentTimeMillis();
+	    ClarkeWright cw = new ClarkeWright(rand, edgeDistanceComparator);
 	    solver.solve(graphData, cw);
 	    elapsedTimeSolve = System.currentTimeMillis() - startTimeSolve;
 	    System.err.println("Time to calculate solution " + elapsedTimeSolve);

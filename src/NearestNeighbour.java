@@ -22,6 +22,7 @@ public class NearestNeighbour implements TourConstructStrategy {
 	}
 	// Pick a random first node
 	int firstNode = random.nextInt(nodes.size());
+	firstNode = 0;
 	nodes.remove(firstNode);
 
 	List<Integer> partialTour = new ArrayList<>();
