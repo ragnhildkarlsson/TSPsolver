@@ -12,8 +12,8 @@ public class GraphDataLightTest {
 		EdgeDistanceComparator comparator = new EdgeDistanceComparator();
 
 		GraphData mockData = Mockito.mock(GraphData.class);
-		Mockito.when(mockData.numberOfNodes()).thenReturn(0);
-		GraphDataLight graphDataLight = new GraphDataLight(mockData, numberOfNeighbours, comparator);
+		double[][] coordinates = new double[4][2];
+		GraphDataLight graphDataLight = new GraphDataLight(coordinates, numberOfNeighbours, comparator);
 
 		long[][] result = graphDataLight.shortAndSort(arrayOfArrays, numberOfNeighbours);
 
@@ -38,25 +38,18 @@ public class GraphDataLightTest {
 		int numberOfNeighbours = 2;
 		EdgeDistanceComparator comparator = new EdgeDistanceComparator();
 
-		GraphData mockData = Mockito.mock(GraphData.class);
-		Mockito.when(mockData.numberOfNodes()).thenReturn(3);
-		Mockito.when(mockData.getDistance(0, 1)).thenReturn((long) 1);
-		Mockito.when(mockData.getDistance(1, 0)).thenReturn((long) 1);
-		Mockito.when(mockData.getDistance(0, 2)).thenReturn((long) 3);
-		Mockito.when(mockData.getDistance(2, 0)).thenReturn((long) 3);
-		Mockito.when(mockData.getDistance(1, 2)).thenReturn((long) 2);
-		Mockito.when(mockData.getDistance(2, 1)).thenReturn((long) 2);
+		double[][] coordinates = { { 0, 0 }, { 1, 0 }, { 3, 0 } };
 
-		GraphDataLight graphDataLight = new GraphDataLight(mockData, numberOfNeighbours, comparator);
+		GraphDataLight graphDataLight = new GraphDataLight(coordinates, numberOfNeighbours, comparator);
 		long[][] edgesToNode0 = graphDataLight.getClosestKNeighbors((short) 0);
 		// first edge to node0 should be {0,1,1}
 		assertEquals(0, edgesToNode0[0][0]);
 		assertEquals(1, edgesToNode0[0][1]);
 		assertEquals(1, edgesToNode0[0][1]);
-		// Second edge to node0 should be {0,2,3}
+		// Second edge to node0 should be {0,2,9}
 		assertEquals(0, edgesToNode0[1][0]);
 		assertEquals(2, edgesToNode0[1][1]);
-		assertEquals(3, edgesToNode0[1][2]);
+		assertEquals(9, edgesToNode0[1][2]);
 		// There should be no more edges than these two
 		assertEquals(2, edgesToNode0.length);
 
@@ -65,22 +58,22 @@ public class GraphDataLightTest {
 		assertEquals(1, edgesToNode1[0][0]);
 		assertEquals(0, edgesToNode1[0][1]);
 		assertEquals(1, edgesToNode1[0][2]);
-		// Second edge to node1 should be {1,2,2}
+		// Second edge to node1 should be {1,2,4}
 		assertEquals(1, edgesToNode1[1][0]);
 		assertEquals(2, edgesToNode1[1][1]);
-		assertEquals(2, edgesToNode1[1][2]);
+		assertEquals(4, edgesToNode1[1][2]);
 		// There should be no more edges than these two
 		assertEquals(2, edgesToNode1.length);
 
 		long[][] edgesToNode2 = graphDataLight.getClosestKNeighbors((short) 2);
-		// first edge to node1 should be {2,1,2}
+		// first edge to node2 should be {2,1,4}
 		assertEquals(2, edgesToNode2[0][0]);
 		assertEquals(1, edgesToNode2[0][1]);
-		assertEquals(2, edgesToNode2[0][2]);
-		// Second edge to node1 should be {1,2,2}
+		assertEquals(4, edgesToNode2[0][2]);
+		// Second edge to node2 should be {2,0,9}
 		assertEquals(2, edgesToNode2[1][0]);
 		assertEquals(0, edgesToNode2[1][1]);
-		assertEquals(3, edgesToNode2[1][2]);
+		assertEquals(9, edgesToNode2[1][2]);
 		// There should be no more edges than these two
 		assertEquals(2, edgesToNode2.length);
 	}
