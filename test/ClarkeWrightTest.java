@@ -67,7 +67,7 @@ public class ClarkeWrightTest {
 
 	EdgeDistanceComparator edgeComparator = new EdgeDistanceComparator();
 
-	ClarkeWright cw = new ClarkeWright(mockRand, edgeComparator);
+	ClarkeWright cw = new ClarkeWright(edgeComparator);
 	Tour tour = cw.constructTour(mockGraphData);
 	List<Integer> res = tour.getTourList();
 	assertEquals(4, res.size());
@@ -137,7 +137,7 @@ public class ClarkeWrightTest {
 	Mockito.when(mockGraphData.getDistance(nodeH, nodeA)).thenReturn((long) 3);
 	Mockito.when(mockGraphData.getDistance(nodeH, nodeB)).thenReturn((long) 3);
 	Mockito.when(mockGraphData.getDistance(nodeH, nodeC)).thenReturn((long) 4);
-	ClarkeWright cw = new ClarkeWright(null, null);
+	ClarkeWright cw = new ClarkeWright(null);
 	long[][] res = cw.getShortcuts(mockGraphData, 3);
 	assertEquals(3, res.length);
 	// expected edges

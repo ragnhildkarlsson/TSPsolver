@@ -39,7 +39,7 @@ public class SystemTest {
 	    elapsedTimeRead = System.currentTimeMillis() - startTimeRead;
 	    System.err.println("Time to calculate graphData " + elapsedTimeRead);
 	    startTimeSolve = System.currentTimeMillis();
-	    ClarkeWright cw = new ClarkeWright(rand, edgeDistanceComparator);
+	    ClarkeWright cw = new ClarkeWright(edgeDistanceComparator);
 	    solver.solve(graphData, cw);
 	    elapsedTimeSolve = System.currentTimeMillis() - startTimeSolve;
 	    System.err.println("Time to calculate solution " + elapsedTimeSolve);

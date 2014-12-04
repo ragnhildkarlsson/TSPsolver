@@ -11,7 +11,7 @@ public class ClarkeWright implements TourConstructStrategy {
     private Random rand;
     private EdgeDistanceComparator edgeComparator;
 
-    public ClarkeWright(Random rand, EdgeDistanceComparator edgeComparator) {
+    public ClarkeWright(EdgeDistanceComparator edgeComparator) {
 	this.rand = rand;
 	this.edgeComparator = edgeComparator;
 
@@ -31,8 +31,7 @@ public class ClarkeWright implements TourConstructStrategy {
 	}
 
 	// remove hub from nodes
-	int hub = rand.nextInt(nodes.size());
-	hub = 0;
+	int hub = 0;
 	nodes.remove(hub);
 	long[][] savings = getShortcuts(graphData, hub);
 
@@ -41,7 +40,8 @@ public class ClarkeWright implements TourConstructStrategy {
 	// we want to have decreasing order so we go backwards;
 	// construct tour
 	PartialGraph partialTour = new PartialGraph(nNodes);
-	int edgeIndex = savings.length - 1;
+	// int edgeIndex = savings.length - 1;
+	int edgeIndex = 0;
 	while (nodes.size() > 2) {
 	    long[] edge = savings[edgeIndex];
 	    int nodeA = (int) edge[0];
@@ -56,7 +56,8 @@ public class ClarkeWright implements TourConstructStrategy {
 		}
 	    }
 
-	    edgeIndex--;
+	    // edgeIndex--;
+	    edgeIndex++;
 	}
 
 	// Add remaining edges to the partial tour;
@@ -155,8 +156,10 @@ public class ClarkeWright implements TourConstructStrategy {
 	    for (int j = i + 1; j < nNodes; j++) {
 		if (j != hub && i != hub) {
 		    // i and j are not equal to hub
-		    long saving = (graphData.getDistance(i, hub) + graphData.getDistance(j, hub))
-			    - graphData.getDistance(i, j);
+		    // long saving = (graphData.getDistance(i, hub) +
+		    // graphData.getDistance(j, hub))
+		    // - graphData.getDistance(i, j);
+		    long saving = graphData.getDistance(i, j);
 		    uniqueEdges[edgeIndex][0] = i;
 		    uniqueEdges[edgeIndex][1] = j;
 		    uniqueEdges[edgeIndex][2] = saving;
