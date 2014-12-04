@@ -35,11 +35,11 @@ public class SystemTest {
 			generator = new TestDataGenerator(rand.nextInt(1000) + 1);
 			String indata = generator.getTestCase();
 			InputStream indataStream = new ByteArrayInputStream(indata.getBytes(StandardCharsets.UTF_8));
-			Kattio io = new Kattio(indataStream);
+			// Kattio io = new Kattio(indataStream);
 			startTimeTotal = System.currentTimeMillis();
 
 			startTimeRead = System.currentTimeMillis();
-			double[][] coordinates = ir.read(io);
+			double[][] coordinates = ir.read();
 			elapsedTimeRead = System.currentTimeMillis() - startTimeRead;
 			System.err.println("Time to calculate graphData " + elapsedTimeRead);
 			startTimeSolve = System.currentTimeMillis();
@@ -74,5 +74,6 @@ public class SystemTest {
 
 		System.out.println("The worst indata to solve was");
 		System.out.println(worstIndataSolve);
+
 	}
 }
